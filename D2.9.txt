@@ -1,0 +1,60 @@
+from news.models import * 
+
+u1=User.objects.create_user('User1')
+u2=User.objects.create_user('User2')
+
+Author.objects.create(user_id=u1)
+Author.objects.create(user_id=u2)
+
+Category.objects.create(name='CAT1')
+Category.objects.create(name='CAT2')
+Category.objects.create(name='CAT3')
+Category.objects.create(name='CAT4')
+
+a1 = Author.objects.get(id=1)
+a2 = Author.objects.get(id=2)
+
+Post.objects.create(author_id=a1, category_type='NEWS', title='BREAKING NEWS', text = 'Gotcha!')
+Post.objects.create(author_id=a2, category_type='ARTCL', title='Boring artticle', text = 'oh oh')
+Post.objects.create(author_id=a2, category_type='ARTCL', title='Weekly book club', text = 'Bring your own books with you!')
+
+
+Post.objects.get(id=1).category_id.add(Category.objects.get(id=1))
+Post.objects.get(id=1).category_id.add(Category.objects.get(id=2))
+Post.objects.get(id=2).category_id.add(Category.objects.get(id=3))
+Post.objects.get(id=3).category_id.add(Category.objects.get(id=3))
+
+Comment.objects.create(post_id=Post.objects.get(id=1),user_id=Author.objects.get(id=1).user_id, text = 'Text1')
+Comment.objects.create(post_id=Post.objects.get(id=1),user_id=Author.objects.get(id=2).user_id, text = 'Text2')
+Comment.objects.create(post_id=Post.objects.get(id=3),user_id=Author.objects.get(id=2).user_id, text = 'Text3')
+Comment.objects.create(post_id=Post.objects.get(id=2),user_id=Author.objects.get(id=1).user_id, text = 'Text4')
+
+Comment.objects.get(id=1).like()
+Comment.objects.get(id=3).like()
+Comment.objects.get(id=2).dislike()
+Comment.objects.get(id=4).dislike()
+
+Post.objects.get(id=1).like()
+Post.objects.get(id=2).like()
+Post.objects.get(id=3).dislike()
+
+Author.objects.get(id=1).update_rating()
+Author.objects.get(id=2).update_rating()
+
+Author.objects.order_by('-rating')[:1][0]
+
+ x = Post.objects.order_by('-rating')[:1]
+ for i in x:
+ 	i.created_at
+ 	i.author_id.user_id.username
+ 	i.rating
+ 	i.title
+ 	i.preview()
+
+ Comment.objects.filter(post_id=Post.objects.order_by('-rating')[:1])
+ for i in y:
+     i.created_at
+.    i.text
+     i.rating
+
+
